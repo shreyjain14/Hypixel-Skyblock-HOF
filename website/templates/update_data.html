@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}
+  Update Data
+{% endblock %}
+{% block content %}
+
+    <main class="mt-3">
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+
+                    <h1>Enter Username</h1>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                  <input type="text" class="form-control" placeholder="Username" id="username" aria-label="Username" aria-describedby="basic-addon1">
+                    <button class="btn btn-light" id="btn_load" onclick="GetUpdates()">Update</button>
+                </div>
+            </div>
+            <div class="row" id="updates">
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function GetUpdates() {
+
+            var username = document.querySelector("#username").value;
+            var updates = document.querySelector("#updates");
+            var button_load = document.querySelector("#btn_load");
+
+            button_load.disabled = true;
+            button_load.innerHTML = '<div class="spinner-border" role="status"></div>';
+            updates.innerHTML = '<div class="spinner-border" role="status"></div>';
+
+            fetch(`/load?u=${username}`).then((response) => {
+
+                response.json().then((data) => {
+
+                    updates.innerHTML = `${data[0]}`;
+                    button_load.disabled = false;
+                    button_load.innerHTML = "Update";
+
+                })
+
+            })
+
+        }
+    </script>
+
+{% endblock %}
