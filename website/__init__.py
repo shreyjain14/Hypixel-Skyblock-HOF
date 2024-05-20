@@ -1,5 +1,5 @@
 from flask import Flask
-from os import path, getenv
+from os import getenv
 from dotenv import load_dotenv
 
 load_dotenv('/.env')

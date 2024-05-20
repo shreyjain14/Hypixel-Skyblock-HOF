@@ -25,10 +25,11 @@ def stranded(uuid):
     profiles = []
 
     if response['success']:
-        for profile_info in response['profiles']:
-            if 'game_mode' in profile_info:
-                if profile_info['game_mode'] == 'island':
-                    profiles.append((profile_info['profile_id'], profile_info['cute_name']))
+        if response['profiles']:
+            for profile_info in response['profiles']:
+                if 'game_mode' in profile_info:
+                    if profile_info['game_mode'] == 'island':
+                        profiles.append(profile_info['profile_id'])
     elif response['cause'] == "Invalid API key":
         return "ERROR: Hypixel API Not Responding"
     elif response['cause'] == "Malformed UUID":
@@ -43,4 +44,4 @@ def stranded(uuid):
 
 
 if __name__ == "__main__":
-    pass
+    print(stranded(username('MumboJumbo')))
