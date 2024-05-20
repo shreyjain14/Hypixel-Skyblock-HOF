@@ -21,6 +21,9 @@ def load():
             if stranded_profiles[:6] == "ERROR:":
                 return make_response(jsonify([stranded_profiles]), 400)
 
+            # Update the data here
+
+            # set updates to the items updated
             updates = [stranded_profiles]
 
             return make_response(jsonify(updates), 200)
