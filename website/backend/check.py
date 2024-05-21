@@ -85,7 +85,9 @@ def stranded(uuid):
             'unique_minions': 0,
             'highest_damage': 0,
             'highest_crit_damage': 0,
-            'chocolate': 0
+            'chocolate': 0,
+            'deaths': 0,
+            'collections': 0
         }
     }
 
@@ -184,6 +186,14 @@ def stranded(uuid):
                 if 'total_chocolate' in profile['events']['easter']:
                     if profile['events']['easter']['total_chocolate'] > stranded_tops['misc']['chocolate']:
                         stranded_tops['misc']['chocolate'] = profile['events']['easter']['total_chocolate']
+
+        if 'death_count' in profile['player_data']:
+            if profile['player_data']['death_count'] > stranded_tops['misc']['deaths']:
+                stranded_tops['misc']['deaths'] = profile['player_data']['death_count']
+
+        if 'unlocked_coll_tiers' in profile['player_data']:
+            if len(profile['player_data']['unlocked_coll_tiers']) > stranded_tops['misc']['collections']:
+                stranded_tops['misc']['collections'] = len(profile['player_data']['unlocked_coll_tiers'])
 
     return stranded_tops
 
