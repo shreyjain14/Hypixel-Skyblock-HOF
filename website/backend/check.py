@@ -87,7 +87,8 @@ def stranded(uuid):
             'highest_crit_damage': 0,
             'chocolate': 0,
             'deaths': 0,
-            'collections': 0
+            'collections': 0,
+            'spooky_score': 0
         }
     }
 
@@ -194,6 +195,22 @@ def stranded(uuid):
         if 'unlocked_coll_tiers' in profile['player_data']:
             if len(profile['player_data']['unlocked_coll_tiers']) > stranded_tops['misc']['collections']:
                 stranded_tops['misc']['collections'] = len(profile['player_data']['unlocked_coll_tiers'])
+
+        if 'player_stats' in profile:
+            if 'candy_collected' in profile['player_stats']:
+                for i in profile['player_stats']['candy_collected'].values():
+
+                    if type(i) == dict:
+                        score = 0
+
+                        if 'green_candy' in i:
+                            score += int(i['green_candy'])
+
+                        if 'purple_candy' in i:
+                            score += int(i['purple_candy']) * 5
+
+                        if score > stranded_tops['misc']['spooky_score']:
+                            stranded_tops['misc']['spooky_score'] = score
 
     return stranded_tops
 
