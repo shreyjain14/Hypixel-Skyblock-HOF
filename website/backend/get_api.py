@@ -27,7 +27,9 @@ def get_profiles(username):
         with connection:
             with connection.cursor() as cursor:
                 for skill, xp in stranded_data['skills'].items():
-                    cursor.execute("SELECT player_one, value_one, player_two, value_two, player_three, value_three FROM hof WHERE title = %s", (skill,))
+                    cursor.execute(
+                        "SELECT player_one, value_one, player_two, value_two, player_three, value_three FROM hof WHERE title = %s",
+                        (skill,))
                     result = cursor.fetchone()
 
                     if result:
@@ -43,7 +45,7 @@ def get_profiles(username):
                             """, (value_two, player_two, value_one, player_one, xp, username, skill))
 
                         elif value_one > xp > value_two:
-                                cursor.execute("""
+                            cursor.execute("""
                                 UPDATE hof
                                 SET value_three = %s, player_three = %s,
                                     value_two = %s, player_two = %s
@@ -58,6 +60,41 @@ def get_profiles(username):
                             """, (xp, username, skill))
 
             connection.commit()
+
+            for slayer, xp in stranded_data['slayer'].items():
+                cursor.execute(
+                    "SELECT player_one, value_one, player_two, value_two, player_three, value_three FROM hof WHERE title = %s",
+                    (slayer,))
+                result = cursor.fetchone()
+
+                if result:
+                    player_one, value_one, player_two, value_two, player_three, value_three = result
+
+                    if xp > value_one:
+                        cursor.execute("""
+                            UPDATE hof
+                            SET value_three = %s, player_three = %s,
+                                value_two = %s, player_two = %s,
+                                value_one = %s, player_one = %s
+                            WHERE title = %s
+                        """, (value_two, player_two, value_one, player_one, xp, username, slayer))
+
+                    elif value_one > xp > value_two:
+                        cursor.execute("""
+                            UPDATE hof
+                            SET value_three = %s, player_three = %s,
+                                value_two = %s, player_two = %s
+                            WHERE title = %s
+                        """, (value_two, player_two, xp, username, slayer))
+
+                    elif value_two > xp > value_three:
+                        cursor.execute("""
+                            UPDATE hof
+                            SET value_three = %s, player_three = %s
+                            WHERE title = %s
+                        """, (xp, username, slayer))
+
+        connection.commit()
 
         return 'updated'
 

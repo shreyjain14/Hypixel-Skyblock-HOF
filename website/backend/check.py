@@ -52,19 +52,34 @@ def stranded(uuid):
             'alchemy_xp': 0,
             'carpentry_xp': 0,
             'taming_xp': 0,
-            'runecrafting_xp': 0
+            'runecrafting_xp': 0,
+            'social_xp': 0
+        },
+        'slayer': {
+            'zombie_xp': 0,
+            'spider_xp': 0,
+            'wolf_xp': 0,
+            'enderman_xp': 0,
+            'blaze_xp': 0
         }
     }
 
     for profile in profiles:
+
+        # SKYBLOCK LEVEL
         if profile['leveling']['experience'] > stranded_tops['skills']['skyblock_xp']:
             stranded_tops['skills']['skyblock_xp'] = profile['leveling']['experience']
 
+        # SKILLS
         if 'experience' in profile['player_data']:
 
             if 'SKILL_FARMING' in profile['player_data']['experience']:
                 if profile['player_data']['experience']['SKILL_FARMING'] > stranded_tops['skills']['farming_xp']:
                     stranded_tops['skills']['farming_xp'] = profile['player_data']['experience']['SKILL_FARMING']
+
+            if 'SKILL_SOCIAL' in profile['player_data']['experience']:
+                if profile['player_data']['experience']['SKILL_SOCIAL'] > stranded_tops['skills']['social_xp']:
+                    stranded_tops['skills']['social_xp'] = profile['player_data']['experience']['SKILL_SOCIAL']
 
             if 'SKILL_MINING' in profile['player_data']['experience']:
                 if profile['player_data']['experience']['SKILL_MINING'] > stranded_tops['skills']['mining_xp']:
@@ -101,6 +116,27 @@ def stranded(uuid):
             if 'SKILL_RUNECRAFTING' in profile['player_data']['experience']:
                 if profile['player_data']['experience']['SKILL_RUNECRAFTING'] > stranded_tops['skills']['runecrafting_xp']:
                     stranded_tops['skills']['runecrafting_xp'] = profile['player_data']['experience']['SKILL_RUNECRAFTING']
+
+        # SLAYERS
+        if 'xp' in profile['slayer']['slayer_bosses']['zombie']:
+            if profile['slayer']['slayer_bosses']['zombie']['xp'] > stranded_tops['slayer']['zombie_xp']:
+                stranded_tops['slayer']['zombie_xp'] = profile['slayer']['slayer_bosses']['zombie']['xp']
+
+        if 'xp' in profile['slayer']['slayer_bosses']['spider']:
+            if profile['slayer']['slayer_bosses']['spider']['xp'] > stranded_tops['slayer']['spider_xp']:
+                stranded_tops['slayer']['spider_xp'] = profile['slayer']['slayer_bosses']['spider']['xp']
+
+        if 'xp' in profile['slayer']['slayer_bosses']['wolf']:
+            if profile['slayer']['slayer_bosses']['wolf']['xp'] > stranded_tops['slayer']['wolf_xp']:
+                stranded_tops['slayer']['wolf_xp'] = profile['slayer']['slayer_bosses']['wolf']['xp']
+
+        if 'xp' in profile['slayer']['slayer_bosses']['enderman']:
+            if profile['slayer']['slayer_bosses']['enderman']['xp'] > stranded_tops['slayer']['enderman_xp']:
+                stranded_tops['slayer']['enderman_xp'] = profile['slayer']['slayer_bosses']['enderman']['xp']
+
+        if 'xp' in profile['slayer']['slayer_bosses']['blaze']:
+            if profile['slayer']['slayer_bosses']['blaze']['xp'] > stranded_tops['slayer']['blaze_xp']:
+                stranded_tops['slayer']['blaze_xp'] = profile['slayer']['slayer_bosses']['blaze']['xp']
 
     return stranded_tops
 
