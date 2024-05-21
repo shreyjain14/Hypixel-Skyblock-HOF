@@ -16,8 +16,12 @@ connection = psycopg2.connect(db_url)
 def home():
     with connection:
         with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('home', CURRENT_TIMESTAMP);")
+
             cursor.execute("SELECT * FROM hof WHERE category = 'skills' ORDER BY title_id;")
             vals = cursor.fetchall()
+
+            connection.commit()
 
             res = format.db_response(vals)
 
@@ -28,8 +32,12 @@ def home():
 def slayer():
     with connection:
         with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('slayer', CURRENT_TIMESTAMP);")
+
             cursor.execute("SELECT * FROM hof WHERE category = 'slayer' ORDER BY title_id;")
             vals = cursor.fetchall()
+
+            connection.commit()
 
             res = format.db_response(vals)
 
@@ -40,8 +48,12 @@ def slayer():
 def misc():
     with connection:
         with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('misc', CURRENT_TIMESTAMP);")
+
             cursor.execute("SELECT * FROM hof WHERE category = 'misc' ORDER BY title_id;")
             vals = cursor.fetchall()
+
+            connection.commit()
 
             res = format.db_response(vals)
 
@@ -52,7 +64,12 @@ def misc():
 def blacklist():
     with connection:
         with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('blacklist', CURRENT_TIMESTAMP);")
+
             cursor.execute("SELECT * FROM blacklist ORDER BY list_id;")
+
+            connection.commit()
+
             vals = cursor.fetchall()
 
     return render_template("blacklist.html", vals=vals)
@@ -60,4 +77,9 @@ def blacklist():
 
 @views.route('/update')
 def update():
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('update', CURRENT_TIMESTAMP);")
+            connection.commit()
+
     return render_template("update_data.html")

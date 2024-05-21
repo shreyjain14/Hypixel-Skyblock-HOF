@@ -13,8 +13,18 @@ db_url = os.getenv('DATABASE_URL')
 form_data = Blueprint('form_data', __name__)
 
 
+load_dotenv()
+
+
 @form_data.route('/load')
 def load():
+    connection = psycopg2.connect(db_url)
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('update_form', CURRENT_TIMESTAMP);")
+
+            connection.commit()
+
     if request.args:
 
         username = request.args.get('u')
@@ -26,6 +36,13 @@ def load():
 
 @form_data.route('/blacklist-user')
 def blacklist():
+    connection = psycopg2.connect(db_url)
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('blacklist_form', CURRENT_TIMESTAMP);")
+
+            connection.commit()
+
     if request.args:
 
         username = request.args.get('u')
