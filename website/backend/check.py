@@ -95,8 +95,9 @@ def stranded(uuid):
     for profile in profiles:
 
         # SKYBLOCK LEVEL
-        if profile['leveling']['experience'] > stranded_tops['skills']['skyblock_xp']:
-            stranded_tops['skills']['skyblock_xp'] = profile['leveling']['experience']
+        if 'leveling' in profile:
+            if profile['leveling']['experience'] > stranded_tops['skills']['skyblock_xp']:
+                stranded_tops['skills']['skyblock_xp'] = profile['leveling']['experience']
 
         # SKILLS
         if 'experience' in profile['player_data']:
@@ -159,13 +160,15 @@ def stranded(uuid):
                 if profile['slayer']['slayer_bosses']['wolf']['xp'] > stranded_tops['slayer']['wolf_xp']:
                     stranded_tops['slayer']['wolf_xp'] = profile['slayer']['slayer_bosses']['wolf']['xp']
 
-            if 'xp' in profile['slayer']['slayer_bosses']['enderman']:
-                if profile['slayer']['slayer_bosses']['enderman']['xp'] > stranded_tops['slayer']['enderman_xp']:
-                    stranded_tops['slayer']['enderman_xp'] = profile['slayer']['slayer_bosses']['enderman']['xp']
+            if 'enderman' in profile['slayer']['slayer_bosses']:
+                if 'xp' in profile['slayer']['slayer_bosses']['enderman']:
+                    if profile['slayer']['slayer_bosses']['enderman']['xp'] > stranded_tops['slayer']['enderman_xp']:
+                        stranded_tops['slayer']['enderman_xp'] = profile['slayer']['slayer_bosses']['enderman']['xp']
 
-            if 'xp' in profile['slayer']['slayer_bosses']['blaze']:
-                if profile['slayer']['slayer_bosses']['blaze']['xp'] > stranded_tops['slayer']['blaze_xp']:
-                    stranded_tops['slayer']['blaze_xp'] = profile['slayer']['slayer_bosses']['blaze']['xp']
+            if 'blaze' in profile['slayer']['slayer_bosses']:
+                if 'xp' in profile['slayer']['slayer_bosses']['blaze']:
+                    if profile['slayer']['slayer_bosses']['blaze']['xp'] > stranded_tops['slayer']['blaze_xp']:
+                        stranded_tops['slayer']['blaze_xp'] = profile['slayer']['slayer_bosses']['blaze']['xp']
 
         # MISCELLANEOUS
         if 'player_data' in profile:
