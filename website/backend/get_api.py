@@ -2,12 +2,13 @@ from dotenv import load_dotenv
 import os
 import requests
 import json
+import psycopg2
 from website.backend import check
 
 load_dotenv()
 
-URL = 'https://api.hypixel.net/v2/skyblock/profile'
-headers = {'API-Key': os.getenv('HYPIXEL-API-KEY')}
+db_url = os.getenv('DATABASE_URL')
+connection = psycopg2.connect(db_url)
 
 
 def get_profiles(username):
@@ -17,14 +18,49 @@ def get_profiles(username):
         return uuid
     else:
 
-        stranded_profiles = check.stranded(uuid)
+        stranded_data = check.stranded(uuid)
 
-        if stranded_profiles[:6] == "ERROR:":
-            return stranded_profiles
+        if type(stranded_data) == list:
+            if stranded_data[:6] == "ERROR:":
+                return stranded_data
 
-        # Update the data here
+        with connection:
+            with connection.cursor() as cursor:
+                for skill, xp in stranded_data['skills'].items():
+                    cursor.execute("SELECT player_one, value_one, player_two, value_two, player_three, value_three FROM hof WHERE title = %s", (skill,))
+                    result = cursor.fetchone()
 
-        # set updates to the items updated
-        updates = [stranded_profiles]
+                    if result:
+                        player_one, value_one, player_two, value_two, player_three, value_three = result
+
+                        if xp > value_one:
+                            cursor.execute("""
+                                UPDATE hof
+                                SET value_three = %s, player_three = %s,
+                                    value_two = %s, player_two = %s,
+                                    value_one = %s, player_one = %s
+                                WHERE title = %s
+                            """, (value_two, player_two, value_one, player_one, xp, username, skill))
+
+                        elif value_one > xp > value_two:
+                                cursor.execute("""
+                                UPDATE hof
+                                SET value_three = %s, player_three = %s,
+                                    value_two = %s, player_two = %s
+                                WHERE title = %s
+                            """, (value_two, player_two, xp, username, skill))
+
+                        elif value_two > xp > value_three:
+                            cursor.execute("""
+                                UPDATE hof
+                                SET value_three = %s, player_three = %s
+                                WHERE title = %s
+                            """, (xp, username, skill))
+
+            connection.commit()
 
         return 'updated'
+
+
+if __name__ == "__main__":
+    get_profiles('Z109')
