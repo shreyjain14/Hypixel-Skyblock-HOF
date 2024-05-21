@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 import psycopg2
 from dotenv import load_dotenv
 import os
+from .backend import format
 
 views = Blueprint('views', __name__)
 
@@ -18,11 +19,7 @@ def home():
             cursor.execute("SELECT * FROM hof WHERE category = 'skills' ORDER BY title_id;")
             vals = cursor.fetchall()
 
-            res = []
-
-            for val in vals:
-                res.append([val[0], val[1], val[2], val[3], val[4], '{0:,}'.format(val[5]),
-                            val[6], '{0:,}'.format(val[7]), val[8], '{0:,}'.format(val[9])])
+            res = format.db_response(vals)
 
     return render_template("home.html", skills=res)
 
@@ -34,11 +31,7 @@ def slayer():
             cursor.execute("SELECT * FROM hof WHERE category = 'slayer' ORDER BY title_id;")
             vals = cursor.fetchall()
 
-            res = []
-
-            for val in vals:
-                res.append([val[0], val[1], val[2], val[3], val[4], '{0:,}'.format(val[5]),
-                            val[6], '{0:,}'.format(val[7]), val[8], '{0:,}'.format(val[9])])
+            res = format.db_response(vals)
 
     return render_template("home.html", skills=res)
 
