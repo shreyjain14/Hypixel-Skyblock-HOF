@@ -130,33 +130,4 @@ def get_profiles(username):
 
 
 if __name__ == "__main__":
-    tops = {
-        'skills': {
-            'skyblock_xp': 14200,
-            'farming_xp': 0,
-            'mining_xp': 0,
-            'combat_xp': 0,
-            'foraging_xp': 0,
-            'fishing_xp': 0,
-            'enchanting_xp': 0,
-            'alchemy_xp': 0,
-            'carpentry_xp': 0,
-            'taming_xp': 0,
-            'runecrafting_xp': 0,
-            'social_xp': 0
-        },
-        'slayer': {
-            'zombie_xp': 0,
-            'spider_xp': 0,
-            'wolf_xp': 0,
-            'enderman_xp': 0,
-            'blaze_xp': 0
-        }
-    }
-
-    connection = psycopg2.connect(db_url)
-
-    with connection:
-        with connection.cursor() as cursor:
-
-            update_leaderboard(connection, cursor, tops, 'darkdash')
+    pass

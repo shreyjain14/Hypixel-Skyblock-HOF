@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}
+  Home
+{% endblock %}
+{% block content %}
+
+    <main class="mt-3">
+
+      <div class="row justify-content-center">
+
+        <h1>Blacklist</h1>
+
+      </div>
+
+
+      <div class="row justify-content-center">
+
+        <table class="table text-white">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>UUID</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for user in vals %}
+
+            <tr>
+              <td>{{ user[0] }}</td>
+              <td>{{ user[2] }}</td>
+              <td>{{ user[1] }}</td>
+            </tr>
+
+          {% endfor %}
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="row">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Username" id="username" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="password" id="password" aria-label="Password" aria-describedby="basic-addon1">
+            <button class="btn btn-light" id="btn_load" onclick="blakclist()">Blacklist</button>
+          </div>
+      </div>
+      <div class="row" id="updates">
+      </div>
+
+    </main>
+
+  <script>
+        function blakclist() {
+
+            var username = document.querySelector("#username").value;
+            var password = document.querySelector("#password").value;
+            var updates = document.querySelector("#updates");
+            var button_load = document.querySelector("#btn_load");
+
+            button_load.disabled = true;
+            button_load.innerHTML = '<div class="spinner-border" role="status"></div>';
+            updates.innerHTML = '<div class="spinner-border" role="status"></div>';
+
+            fetch(`/blacklist-user?u=${username}&p=${password}`).then((response) => {
+
+                response.json().then((data) => {
+
+                    updates.innerHTML = `${data[0]}`;
+                    button_load.disabled = false;
+                    button_load.innerHTML = "Update";
+
+                })
+
+            })
+
+        }
+    </script>
+
+{% endblock %}

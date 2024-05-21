@@ -1,5 +1,14 @@
 from flask import Blueprint, request, make_response, jsonify
 from .backend.get_api import get_profiles
+from dotenv import load_dotenv
+import psycopg2
+import os
+from .backend import check
+
+
+load_dotenv()
+
+db_url = os.getenv('DATABASE_URL')
 
 form_data = Blueprint('form_data', __name__)
 
@@ -13,3 +22,34 @@ def load():
         updates = [get_profiles(username)]
 
         return make_response(jsonify(updates), 200)
+
+
+@form_data.route('/blacklist-user')
+def blacklist():
+    if request.args:
+
+        username = request.args.get('u')
+        password = request.args.get('p')
+
+        if password == os.getenv('PASSWORD'):
+
+            uuid = check.username(username)
+
+            if uuid[:6] == 'ERROR:':
+                if uuid == 'ERROR: Username Not Found!':
+                    return make_response(jsonify([uuid]), 400)
+                else:
+                    return make_response(jsonify(["ERROR: User is already in blacklist"]), 400)
+
+            else:
+
+                connection = psycopg2.connect(db_url)
+
+                with connection:
+                    with connection.cursor() as cursor:
+                        cursor.execute(f"INSERT INTO blacklist (uuid, username) VALUES ('{uuid}', '{username}');")
+
+                return make_response(jsonify([f"{username} Blacklisted"]), 200)
+
+        else:
+            return make_response(jsonify(["ERROR: Incorrect Password"]), 400)

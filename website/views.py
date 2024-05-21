@@ -48,6 +48,16 @@ def misc():
     return render_template("home.html", skills=res)
 
 
+@views.route('/blacklist')
+def blacklist():
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM blacklist ORDER BY list_id;")
+            vals = cursor.fetchall()
+
+    return render_template("blacklist.html", vals=vals)
+
+
 @views.route('/update')
 def update():
     return render_template("update_data.html")
