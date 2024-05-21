@@ -18,7 +18,13 @@ def home():
             cursor.execute("SELECT * FROM hof WHERE category = 'skills' ORDER BY title_id;")
             vals = cursor.fetchall()
 
-    return render_template("home.html", skills=vals)
+            res = []
+
+            for val in vals:
+                res.append([val[0], val[1], val[2], val[3], val[4], '{0:,}'.format(val[5]),
+                            val[6], '{0:,}'.format(val[7]), val[8], '{0:,}'.format(val[9])])
+
+    return render_template("home.html", skills=res)
 
 
 @views.route('/update')
