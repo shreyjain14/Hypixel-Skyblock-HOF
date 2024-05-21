@@ -31,7 +31,14 @@ def blacklist():
         username = request.args.get('u')
         password = request.args.get('p')
 
-        if password == os.getenv('PASSWORD'):
+        connection = psycopg2.connect(db_url)
+
+        with connection:
+            with connection.cursor() as cursor:
+                cursor.execute(f"SELECT value_name FROM keys WHERE key_name='password';")
+                result = cursor.fetchone()[0]
+
+        if password == result:
 
             uuid = check.username(username)
 
@@ -48,6 +55,7 @@ def blacklist():
                 with connection:
                     with connection.cursor() as cursor:
                         cursor.execute(f"INSERT INTO blacklist (uuid, username) VALUES ('{uuid}', '{username}');")
+                        connection.commit()
 
                 return make_response(jsonify([f"{username} Blacklisted"]), 200)
 
