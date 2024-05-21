@@ -118,25 +118,26 @@ def stranded(uuid):
                     stranded_tops['skills']['runecrafting_xp'] = profile['player_data']['experience']['SKILL_RUNECRAFTING']
 
         # SLAYERS
-        if 'xp' in profile['slayer']['slayer_bosses']['zombie']:
-            if profile['slayer']['slayer_bosses']['zombie']['xp'] > stranded_tops['slayer']['zombie_xp']:
-                stranded_tops['slayer']['zombie_xp'] = profile['slayer']['slayer_bosses']['zombie']['xp']
+        if 'slayer' in profile:
+            if 'xp' in profile['slayer']['slayer_bosses']['zombie']:
+                if profile['slayer']['slayer_bosses']['zombie']['xp'] > stranded_tops['slayer']['zombie_xp']:
+                    stranded_tops['slayer']['zombie_xp'] = profile['slayer']['slayer_bosses']['zombie']['xp']
 
-        if 'xp' in profile['slayer']['slayer_bosses']['spider']:
-            if profile['slayer']['slayer_bosses']['spider']['xp'] > stranded_tops['slayer']['spider_xp']:
-                stranded_tops['slayer']['spider_xp'] = profile['slayer']['slayer_bosses']['spider']['xp']
+            if 'xp' in profile['slayer']['slayer_bosses']['spider']:
+                if profile['slayer']['slayer_bosses']['spider']['xp'] > stranded_tops['slayer']['spider_xp']:
+                    stranded_tops['slayer']['spider_xp'] = profile['slayer']['slayer_bosses']['spider']['xp']
 
-        if 'xp' in profile['slayer']['slayer_bosses']['wolf']:
-            if profile['slayer']['slayer_bosses']['wolf']['xp'] > stranded_tops['slayer']['wolf_xp']:
-                stranded_tops['slayer']['wolf_xp'] = profile['slayer']['slayer_bosses']['wolf']['xp']
+            if 'xp' in profile['slayer']['slayer_bosses']['wolf']:
+                if profile['slayer']['slayer_bosses']['wolf']['xp'] > stranded_tops['slayer']['wolf_xp']:
+                    stranded_tops['slayer']['wolf_xp'] = profile['slayer']['slayer_bosses']['wolf']['xp']
 
-        if 'xp' in profile['slayer']['slayer_bosses']['enderman']:
-            if profile['slayer']['slayer_bosses']['enderman']['xp'] > stranded_tops['slayer']['enderman_xp']:
-                stranded_tops['slayer']['enderman_xp'] = profile['slayer']['slayer_bosses']['enderman']['xp']
+            if 'xp' in profile['slayer']['slayer_bosses']['enderman']:
+                if profile['slayer']['slayer_bosses']['enderman']['xp'] > stranded_tops['slayer']['enderman_xp']:
+                    stranded_tops['slayer']['enderman_xp'] = profile['slayer']['slayer_bosses']['enderman']['xp']
 
-        if 'xp' in profile['slayer']['slayer_bosses']['blaze']:
-            if profile['slayer']['slayer_bosses']['blaze']['xp'] > stranded_tops['slayer']['blaze_xp']:
-                stranded_tops['slayer']['blaze_xp'] = profile['slayer']['slayer_bosses']['blaze']['xp']
+            if 'xp' in profile['slayer']['slayer_bosses']['blaze']:
+                if profile['slayer']['slayer_bosses']['blaze']['xp'] > stranded_tops['slayer']['blaze_xp']:
+                    stranded_tops['slayer']['blaze_xp'] = profile['slayer']['slayer_bosses']['blaze']['xp']
 
     return stranded_tops
 
