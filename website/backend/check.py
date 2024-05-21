@@ -23,8 +23,6 @@ def username(uname):
                 cursor.execute(f"SELECT COUNT(*) FROM blacklist WHERE uuid = '{response['id']}';")
                 result = cursor.fetchone()
 
-                print(result)
-
                 if result[0] > 0:
                     return "ERROR: You have been blacklisted from this leaderboard"
                 else:
@@ -86,7 +84,8 @@ def stranded(uuid):
         'misc': {
             'unique_minions': 0,
             'highest_damage': 0,
-            'highest_crit_damage': 0
+            'highest_crit_damage': 0,
+            'chocolate': 0
         }
     }
 
@@ -179,6 +178,12 @@ def stranded(uuid):
             if 'highest_critical_damage' in profile['player_stats']:
                 if profile['player_stats']['highest_critical_damage'] > stranded_tops['misc']['highest_crit_damage']:
                     stranded_tops['misc']['highest_crit_damage'] = profile['player_stats']['highest_critical_damage']
+
+        if 'events' in profile:
+            if 'easter' in profile['events']:
+                if 'total_chocolate' in profile['events']['easter']:
+                    if profile['events']['easter']['total_chocolate'] > stranded_tops['misc']['chocolate']:
+                        stranded_tops['misc']['chocolate'] = profile['events']['easter']['total_chocolate']
 
     return stranded_tops
 
