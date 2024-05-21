@@ -88,7 +88,8 @@ def stranded(uuid):
             'chocolate': 0,
             'deaths': 0,
             'collections': 0,
-            'spooky_score': 0
+            'spooky_score': 0,
+            'highest_pet_score': 0
         }
     }
 
@@ -98,6 +99,11 @@ def stranded(uuid):
         if 'leveling' in profile:
             if profile['leveling']['experience'] > stranded_tops['skills']['skyblock_xp']:
                 stranded_tops['skills']['skyblock_xp'] = profile['leveling']['experience']
+
+            # MISC
+            if 'highest_pet_score' in profile['leveling']:
+                if profile['leveling']['highest_pet_score'] > stranded_tops['misc']['highest_pet_score']:
+                    stranded_tops['misc']['highest_pet_score'] = profile['leveling']['highest_pet_score']
 
         # SKILLS
         if 'experience' in profile['player_data']:
