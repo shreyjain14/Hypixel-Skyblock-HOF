@@ -36,6 +36,18 @@ def slayer():
     return render_template("home.html", skills=res)
 
 
+@views.route('/misc')
+def misc():
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM hof WHERE category = 'misc' ORDER BY title_id;")
+            vals = cursor.fetchall()
+
+            res = format.db_response(vals)
+
+    return render_template("home.html", skills=res)
+
+
 @views.route('/update')
 def update():
     return render_template("update_data.html")

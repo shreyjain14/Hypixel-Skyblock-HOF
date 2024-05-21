@@ -61,6 +61,11 @@ def stranded(uuid):
             'wolf_xp': 0,
             'enderman_xp': 0,
             'blaze_xp': 0
+        },
+        'misc': {
+            'unique_minions': 0,
+            'highest_damage': 0,
+            'highest_crit_damage': 0
         }
     }
 
@@ -138,6 +143,21 @@ def stranded(uuid):
             if 'xp' in profile['slayer']['slayer_bosses']['blaze']:
                 if profile['slayer']['slayer_bosses']['blaze']['xp'] > stranded_tops['slayer']['blaze_xp']:
                     stranded_tops['slayer']['blaze_xp'] = profile['slayer']['slayer_bosses']['blaze']['xp']
+
+        # MISCELLANEOUS
+        if 'player_data' in profile:
+            if 'crafted_generators' in profile['player_data']:
+                if len(profile['player_data']['crafted_generators']) > stranded_tops['misc']['unique_minions']:
+                    stranded_tops['misc']['unique_minions'] = len(profile['player_data']['crafted_generators'])
+
+        if 'player_stats' in profile:
+            if 'highest_damage' in profile['player_stats']:
+                if profile['player_stats']['highest_damage'] > stranded_tops['misc']['highest_damage']:
+                    stranded_tops['misc']['highest_damage'] = profile['player_stats']['highest_damage']
+
+            if 'highest_critical_damage' in profile['player_stats']:
+                if profile['player_stats']['highest_critical_damage'] > stranded_tops['misc']['highest_crit_damage']:
+                    stranded_tops['misc']['highest_crit_damage'] = profile['player_stats']['highest_critical_damage']
 
     return stranded_tops
 
