@@ -18,7 +18,7 @@ def load():
 
     for idx, member in enumerate(response):
 
-        if idx < 98:
+        if idx < 0:
             continue
 
         try:
@@ -26,8 +26,8 @@ def load():
             print(idx, username)
             get_profiles(username)
 
-        except AttributeError:
-            pass
+        except AttributeError as e:
+            print(e)
 
 
 if __name__ == "__main__":

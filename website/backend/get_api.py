@@ -124,7 +124,11 @@ def get_profiles(username):
         with connection:
             with connection.cursor() as cursor:
 
-                update_leaderboard(connection, cursor, stranded_data, username)
+                try:
+                    update_leaderboard(connection, cursor, stranded_data, username)
+
+                except AttributeError:
+                    return 'ERROR: Contact DarkDash (@pestopastasauce on discord)'
 
         return 'updated'
 
