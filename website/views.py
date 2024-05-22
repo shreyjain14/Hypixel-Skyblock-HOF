@@ -18,7 +18,7 @@ def home():
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('home', CURRENT_TIMESTAMP);")
 
-            cursor.execute("SELECT * FROM hof WHERE category = 'skills' ORDER BY title_id;")
+            cursor.execute("SELECT * FROM hof WHERE category = 'skyblock' ORDER BY title_id;")
             vals = cursor.fetchall()
 
             connection.commit()
@@ -28,29 +28,16 @@ def home():
     return render_template("home.html", skills=res)
 
 
-@views.route('/slayer')
-def slayer():
+@views.route('/lb/<category>')
+def slayer(category):
     with connection:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('slayer', CURRENT_TIMESTAMP);")
 
-            cursor.execute("SELECT * FROM hof WHERE category = 'slayer' ORDER BY title_id;")
-            vals = cursor.fetchall()
+            category = category.lower()
 
-            connection.commit()
+            cursor.execute(f"INSERT INTO analytics (page, visit_time) VALUES ('{category}', CURRENT_TIMESTAMP);")
 
-            res = format.db_response(vals)
-
-    return render_template("home.html", skills=res)
-
-
-@views.route('/misc')
-def misc():
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('misc', CURRENT_TIMESTAMP);")
-
-            cursor.execute("SELECT * FROM hof WHERE category = 'misc' ORDER BY title_id;")
+            cursor.execute(f"SELECT * FROM hof WHERE category = '{category}' ORDER BY title_id;")
             vals = cursor.fetchall()
 
             connection.commit()

@@ -30,13 +30,17 @@ def load():
 
         username = request.args.get('u').lower()
 
-        uuid = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{username}").json()['id']
+        uuid = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{username}").json()
 
-        username = requests.get(f"https://sessionserver.mojang.com/session/minecraft/profile/{uuid}").json()['name']
+        if 'id' in uuid:
+            username = requests.get(f"https://sessionserver.mojang.com/session/minecraft/profile/{uuid['id']}").json()['name']
 
-        updates = [get_profiles(username)]
+            updates = [get_profiles(username)]
 
-        return make_response(jsonify(updates), 200)
+            return make_response(jsonify(updates), 200)
+
+        else:
+            return make_response(jsonify(['ERROR: Username not Found!']), 200)
 
 
 @form_data.route('/blacklist-user')

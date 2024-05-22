@@ -1,8 +1,7 @@
 from dotenv import load_dotenv
 import requests
-import dotenv
+from dotenv import load_dotenv
 import os
-import json
 import psycopg2
 
 

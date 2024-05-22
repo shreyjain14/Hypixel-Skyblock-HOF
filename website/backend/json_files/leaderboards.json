@@ -1,0 +1,40 @@
+{
+  "skyblock": {
+    "skyblock_xp": 0
+  },
+  "skills": {
+    "farming_xp": 0,
+    "mining_xp": 0,
+    "combat_xp": 0,
+    "foraging_xp": 0,
+    "fishing_xp": 0,
+    "enchanting_xp": 0,
+    "alchemy_xp": 0,
+    "carpentry_xp": 0,
+    "taming_xp": 0,
+    "runecrafting_xp": 0,
+    "social_xp": 0
+  },
+  "slayer": {
+    "zombie_xp": 0,
+    "spider_xp": 0,
+    "wolf_xp": 0,
+    "enderman_xp": 0,
+    "blaze_xp": 0
+  },
+  "fishing": {
+    "sea_creature_kills": 0,
+    "treasure_fished": 0,
+    "trophy_fished": 0
+  },
+  "misc": {
+    "unique_minions": 0,
+    "highest_damage": 0,
+    "highest_crit_damage": 0,
+    "chocolate": 0,
+    "deaths": 0,
+    "collections": 0,
+    "spooky_score": 0,
+    "highest_pet_score": 0
+  }
+}

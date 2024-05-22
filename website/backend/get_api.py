@@ -1,7 +1,5 @@
 from dotenv import load_dotenv
 import os
-import requests
-import json
 import psycopg2
 from website.backend import check
 from website.backend.stranded_api import stranded
@@ -14,8 +12,23 @@ db_url = os.getenv('DATABASE_URL')
 def update_leaderboard(connection, cursor, stranded_data, username, table_name="hof"):
     for category, values in stranded_data.items():
         for title, xp in values.items():
+
+            cursor.execute(f"SELECT COUNT(*) FROM hof WHERE title = '{title}';")
+            title_check = cursor.fetchone()[0]
+
+            if title_check == 0:
+
+                title_name = ' '.join(title.upper().split('_'))
+
+                cursor.execute(
+                    f"INSERT INTO hof(title, category, title_name, value_one, value_two, value_three) "
+                    f"VALUES ('{title}', '{category}', '{title_name}', 0, 0, 0);"
+                )
+                connection.commit()
+
             cursor.execute(
-                f"SELECT player_one, value_one, player_two, value_two, player_three, value_three FROM {table_name} WHERE title = %s",
+                f"SELECT player_one, value_one, player_two, value_two, player_three, value_three FROM {table_name} "
+                f"WHERE title = %s",
                 (title,))
             result = cursor.fetchone()
 

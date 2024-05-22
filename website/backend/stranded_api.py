@@ -1,7 +1,7 @@
+import json
 import requests
 from dotenv import load_dotenv
 import os
-import json
 
 
 def stranded(uuid):
@@ -32,46 +32,15 @@ def stranded(uuid):
     if len(profiles) == 0:
         return "ERROR: You do not have any Stranded Profiles"
 
-    stranded_tops = {
-        'skills': {
-            'skyblock_xp': 0,
-            'farming_xp': 0,
-            'mining_xp': 0,
-            'combat_xp': 0,
-            'foraging_xp': 0,
-            'fishing_xp': 0,
-            'enchanting_xp': 0,
-            'alchemy_xp': 0,
-            'carpentry_xp': 0,
-            'taming_xp': 0,
-            'runecrafting_xp': 0,
-            'social_xp': 0
-        },
-        'slayer': {
-            'zombie_xp': 0,
-            'spider_xp': 0,
-            'wolf_xp': 0,
-            'enderman_xp': 0,
-            'blaze_xp': 0
-        },
-        'misc': {
-            'unique_minions': 0,
-            'highest_damage': 0,
-            'highest_crit_damage': 0,
-            'chocolate': 0,
-            'deaths': 0,
-            'collections': 0,
-            'spooky_score': 0,
-            'highest_pet_score': 0
-        }
-    }
+    with open('website/backend/json_files/leaderboards.json') as f:
+        stranded_tops = json.load(f)
 
     for profile in profiles:
 
         # SKYBLOCK LEVEL
         if 'leveling' in profile:
-            if profile['leveling']['experience'] > stranded_tops['skills']['skyblock_xp']:
-                stranded_tops['skills']['skyblock_xp'] = profile['leveling']['experience']
+            if profile['leveling']['experience'] > stranded_tops['skyblock']['skyblock_xp']:
+                stranded_tops['skyblock']['skyblock_xp'] = profile['leveling']['experience']
 
             # MISC
             if 'highest_pet_score' in profile['leveling']:
@@ -163,6 +132,27 @@ def stranded(uuid):
             if 'highest_critical_damage' in profile['player_stats']:
                 if profile['player_stats']['highest_critical_damage'] > stranded_tops['misc']['highest_crit_damage']:
                     stranded_tops['misc']['highest_crit_damage'] = profile['player_stats']['highest_critical_damage']
+
+            # FISHING
+            if 'sea_creature_kills' in profile['player_stats']:
+                if profile['player_stats']['sea_creature_kills'] > stranded_tops['fishing']['sea_creature_kills']:
+                    stranded_tops['fishing']['sea_creature_kills'] = profile['player_stats']['sea_creature_kills']
+
+            if 'items_fished' in profile['player_stats']:
+                total_fished_sum = 0
+
+                if 'treasure' in profile['player_stats']['items_fished']:
+                    total_fished_sum += profile['player_stats']['items_fished']['treasure']
+
+                if 'large_treasure' in profile['player_stats']['items_fished']:
+                    total_fished_sum += profile['player_stats']['items_fished']['large_treasure']
+
+                if total_fished_sum > stranded_tops['fishing']['treasure_fished']:
+                    stranded_tops['fishing']['treasure_fished'] = total_fished_sum
+
+                if 'trophy_fish' in profile['player_stats']['items_fished']:
+                    if profile['player_stats']['items_fished']['trophy_fish'] > stranded_tops['fishing']['trophy_fished']:
+                        stranded_tops['fishing']['trophy_fished'] = profile['player_stats']['items_fished']['trophy_fish']
 
         if 'events' in profile:
             if 'easter' in profile['events']:
