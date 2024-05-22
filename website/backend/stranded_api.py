@@ -154,6 +154,12 @@ def stranded(uuid):
                     if profile['player_stats']['items_fished']['trophy_fish'] > stranded_tops['fishing']['trophy_fished']:
                         stranded_tops['fishing']['trophy_fished'] = profile['player_stats']['items_fished']['trophy_fish']
 
+            if 'pets' in profile['player_stats']:
+                if 'milestone' in profile['player_stats']['pets']:
+                    if 'sea_creatures_killed' in profile['player_stats']['pets']['milestone']:
+                        if profile['player_stats']['pets']['milestone']['sea_creatures_killed'] > stranded_tops['fishing']['fished_sea_creature_kills']:
+                            stranded_tops['fishing']['fished_sea_creature_kills'] = profile['player_stats']['pets']['milestone']['sea_creatures_killed']
+
         if 'events' in profile:
             if 'easter' in profile['events']:
                 if 'total_chocolate' in profile['events']['easter']:

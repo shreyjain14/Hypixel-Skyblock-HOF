@@ -24,6 +24,7 @@
   },
   "fishing": {
     "sea_creature_kills": 0,
+    "fished_sea_creature_kills": 0,
     "treasure_fished": 0,
     "trophy_fished": 0
   },
