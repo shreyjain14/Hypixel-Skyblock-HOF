@@ -4,6 +4,7 @@ import requests
 import json
 import psycopg2
 from website.backend import check
+from website.backend.stranded_api import stranded
 
 load_dotenv()
 
@@ -113,7 +114,7 @@ def get_profiles(username):
         return uuid
     else:
 
-        stranded_data = check.stranded(uuid)
+        stranded_data = stranded(uuid)
 
         if type(stranded_data) == str:
             if stranded_data[:6] == "ERROR:":
