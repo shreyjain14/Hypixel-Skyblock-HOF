@@ -115,7 +115,7 @@ def get_profiles(username):
 
         stranded_data = check.stranded(uuid)
 
-        if type(stranded_data) == list:
+        if type(stranded_data) == str:
             if stranded_data[:6] == "ERROR:":
                 return stranded_data
 

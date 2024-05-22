@@ -16,6 +16,8 @@ def load():
 
     response = requests.get(url, headers=headers, params=params).json()['guild']['members']
 
+    no_stranded = []
+
     for idx, member in enumerate(response):
 
         if idx < 0:
@@ -24,10 +26,14 @@ def load():
         try:
             username = requests.get(f"https://sessionserver.mojang.com/session/minecraft/profile/{member['uuid']}").json()['name']
             print(idx, username)
-            get_profiles(username)
+            res = get_profiles(username)
+            if res == 'ERROR: You do not have any Stranded Profiles':
+                no_stranded.append(username)
 
         except AttributeError as e:
             print(e)
+
+    print("No Stranded Profiles:", no_stranded)
 
 
 if __name__ == "__main__":
