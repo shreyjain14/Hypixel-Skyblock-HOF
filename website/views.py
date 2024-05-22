@@ -25,7 +25,7 @@ def home():
 
             res = format.db_response(vals)
 
-    return render_template("home.html", skills=res)
+    return render_template("category.html", skills=res)
 
 
 @views.route('/lb/<category>')
@@ -44,7 +44,7 @@ def slayer(category):
 
             res = format.db_response(vals)
 
-    return render_template("home.html", skills=res)
+    return render_template("category.html", skills=res)
 
 
 @views.route('/blacklist')

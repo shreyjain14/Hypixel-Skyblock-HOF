@@ -22,7 +22,7 @@
                     <button class="btn btn-light" id="btn_load" onclick="GetUpdates()">Update</button>
                 </div>
             </div>
-            <div class="row" id="updates">
+            <div id="updates">
             </div>
         </div>
 
@@ -33,17 +33,30 @@
 
             var username = document.querySelector("#username").value;
             var updates = document.querySelector("#updates");
+            var template = document.querySelector("#temp");
             var button_load = document.querySelector("#btn_load");
+
+            updates.innerHTML = ` `;
 
             button_load.disabled = true;
             button_load.innerHTML = '<div class="spinner-border" role="status"></div>';
-            updates.innerHTML = '<div class="spinner-border" role="status"></div>';
 
             fetch(`/load?u=${username}`).then((response) => {
 
                 response.json().then((data) => {
 
-                    updates.innerHTML = `${data[0]}`;
+                    var pos_changes = ""
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        console.log(data[i]);
+
+                        pos_changes += `<p class="row">${data[i]}</p>`;
+
+                    }
+
+                    updates.innerHTML = `${pos_changes}`;
+
                     button_load.disabled = false;
                     button_load.innerHTML = "Update";
 

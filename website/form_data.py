@@ -35,7 +35,7 @@ def load():
         if 'id' in uuid:
             username = requests.get(f"https://sessionserver.mojang.com/session/minecraft/profile/{uuid['id']}").json()['name']
 
-            updates = [get_profiles(username)]
+            updates = get_profiles(username)
 
             return make_response(jsonify(updates), 200)
 

@@ -10,6 +10,9 @@ db_url = os.getenv('DATABASE_URL')
 
 
 def update_leaderboard(connection, cursor, stranded_data, username, table_name="hof"):
+
+    changes = []
+
     for category, values in stranded_data.items():
         for title, xp in values.items():
 
@@ -43,6 +46,8 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                         WHERE title = %s
                     """, (xp, title))
 
+                    changes.append(f"Updated 🥇 in {title} in {category}")
+
                 elif player_two == username:
                     # Check if the new value beats the first place
                     if xp > value_one:
@@ -53,6 +58,9 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                                 value_two = %s, player_two = %s
                             WHERE title = %s
                         """, (xp, username, value_one, player_one, title))
+
+                        changes.append(f"Placed 🥇 in {title} in {category}")
+
                     else:
                         # Update the second place
                         cursor.execute(f"""
@@ -60,6 +68,8 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                             SET value_two = %s
                             WHERE title = %s
                         """, (xp, title))
+
+                        changes.append(f"Updated 🥈 in {title} in {category}")
 
                 elif player_three == username:
                     # Check if the new value beats the second and first places
@@ -72,6 +82,9 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                                 value_one = %s, player_one = %s
                             WHERE title = %s
                         """, (value_two, player_two, value_one, player_one, xp, username, title))
+
+                        changes.append(f"Placed 🥇 in {title} in {category}")
+
                     elif value_one > xp > value_two:
                         # Move the third place to the second place
                         cursor.execute(f"""
@@ -80,6 +93,9 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                                 value_two = %s, player_two = %s
                             WHERE title = %s
                         """, (value_two, player_two, xp, username, title))
+
+                        changes.append(f"Placed 🥈 in {title} in {category}")
+
                     else:
                         # Update the third place
                         cursor.execute(f"""
@@ -87,6 +103,8 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                             SET value_three = %s, player_three = %s
                             WHERE title = %s
                         """, (xp, username, title))
+
+                        changes.append(f"Updated 🥉 in {title} in {category}")
 
                 else:
                     # If the username is not in the leaderboard
@@ -100,6 +118,8 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                             WHERE title = %s
                         """, (value_two, player_two, value_one, player_one, xp, username, title))
 
+                        changes.append(f"Placed 🥇 in {title} in {category}")
+
                     elif value_one > xp > value_two:
                         # Move existing positions and update the second place
                         cursor.execute(f"""
@@ -109,6 +129,8 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                             WHERE title = %s
                         """, (value_two, player_two, xp, username, title))
 
+                        changes.append(f"Placed 🥈 in {title} in {category}")
+
                     elif value_two > xp > value_three:
                         # Update the third place
                         cursor.execute(f"""
@@ -117,7 +139,14 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
                             WHERE title = %s
                         """, (xp, username, title))
 
+                        changes.append(f"Placed 🥉 in {title} in {category}")
+
     connection.commit()
+
+    if len(changes) == 0:
+        changes.append("you are still not placed in any category!")
+
+    return changes
 
 
 def get_profiles(username):
@@ -131,7 +160,7 @@ def get_profiles(username):
 
         if type(stranded_data) == str:
             if stranded_data[:6] == "ERROR:":
-                return stranded_data
+                return [stranded_data]
 
         connection = psycopg2.connect(db_url)
 
@@ -139,12 +168,12 @@ def get_profiles(username):
             with connection.cursor() as cursor:
 
                 try:
-                    update_leaderboard(connection, cursor, stranded_data, username)
+                    updates = update_leaderboard(connection, cursor, stranded_data, username)
 
                 except AttributeError:
-                    return 'ERROR: Contact DarkDash (@pestopastasauce on discord)'
+                    return ['ERROR: Contact DarkDash (@pestopastasauce on discord)']
 
-        return 'updated'
+        return updates
 
 
 if __name__ == "__main__":
