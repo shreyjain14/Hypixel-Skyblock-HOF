@@ -1,3 +1,4 @@
+import requests
 from flask import Blueprint, request, make_response, jsonify
 from .backend.get_api import get_profiles
 from dotenv import load_dotenv
@@ -27,7 +28,11 @@ def load():
 
     if request.args:
 
-        username = request.args.get('u')
+        username = request.args.get('u').lower()
+
+        uuid = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{username}").json()['id']
+
+        username = requests.get(f"https://sessionserver.mojang.com/session/minecraft/profile/{uuid}").json()['name']
 
         updates = [get_profiles(username)]
 
