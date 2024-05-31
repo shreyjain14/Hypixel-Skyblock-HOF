@@ -4,7 +4,7 @@ from .backend.get_api import get_profiles
 from dotenv import load_dotenv
 import psycopg2
 import os
-from .backend import check
+from .backend import check, cf_tracker
 
 
 load_dotenv()
@@ -87,3 +87,15 @@ def blacklist():
 
         else:
             return make_response(jsonify(["ERROR: Incorrect Password"]), 400)
+
+
+@form_data.route('/tracker-data')
+def tracker_data():
+    res = cf_tracker.get_user_data()
+    return make_response(jsonify(res), 200)
+
+
+@form_data.route('/tracker-load')
+def tracker_load():
+    cf_tracker.add_data()
+    return make_response(jsonify(['done']), 200)

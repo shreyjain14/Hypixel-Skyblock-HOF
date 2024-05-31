@@ -166,6 +166,9 @@ def stranded(uuid):
                     if profile['events']['easter']['total_chocolate'] > stranded_tops['misc']['chocolate']:
                         stranded_tops['misc']['chocolate'] = profile['events']['easter']['total_chocolate']
 
+                if 'rabbits' in profile['events']['easter']:
+                    stranded_tops['misc']['unique_rabbits'] = len(profile['events']['easter']['rabbits'])
+
         if 'death_count' in profile['player_data']:
             if profile['player_data']['death_count'] > stranded_tops['misc']['deaths']:
                 stranded_tops['misc']['deaths'] = profile['player_data']['death_count']
