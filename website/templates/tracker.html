@@ -11,7 +11,9 @@
             <tr>
                 <th>Time</th>
                 <th>its23lives Chocolate</th>
+                <th>its23lives Increase</th>
                 <th>straindead Chocolate</th>
+                <th>straindead Increase</th>
             </tr>
         </thead>
         <tbody>
@@ -39,20 +41,34 @@
             const tableBody = document.querySelector('#data-table tbody');
             tableBody.innerHTML = ''; // Clear existing rows
 
-            data.its23lives.forEach((entry, index) => {
+            data.its23lives.forEach((its23livesEntry, index) => {
                 const row = document.createElement('tr');
+
+                // Time
                 const timeCell = document.createElement('td');
-                timeCell.textContent = entry.time;
+                timeCell.textContent = its23livesEntry.time;
                 row.appendChild(timeCell);
 
-                const its23livesCell = document.createElement('td');
-                its23livesCell.textContent = entry.chocolate;
-                row.appendChild(its23livesCell);
+                // its23lives Chocolate
+                const its23livesChocolateCell = document.createElement('td');
+                its23livesChocolateCell.textContent = its23livesEntry.chocolate;
+                row.appendChild(its23livesChocolateCell);
 
+                // its23lives Increase
+                const its23livesIncreaseCell = document.createElement('td');
+                its23livesIncreaseCell.textContent = its23livesEntry.increase;
+                row.appendChild(its23livesIncreaseCell);
+
+                // straindead Chocolate
                 const straindeadEntry = data.straindead[index];
-                const straindeadCell = document.createElement('td');
-                straindeadCell.textContent = straindeadEntry ? straindeadEntry.chocolate : '';
-                row.appendChild(straindeadCell);
+                const straindeadChocolateCell = document.createElement('td');
+                straindeadChocolateCell.textContent = straindeadEntry ? straindeadEntry.chocolate : '';
+                row.appendChild(straindeadChocolateCell);
+
+                // straindead Increase
+                const straindeadIncreaseCell = document.createElement('td');
+                straindeadIncreaseCell.textContent = straindeadEntry ? straindeadEntry.increase : '';
+                row.appendChild(straindeadIncreaseCell);
 
                 tableBody.appendChild(row);
             });
