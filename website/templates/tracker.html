@@ -4,16 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chocolate Tracker</title>
+    <style>
+        body {
+            background-color: #191919;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <table id="data-table" border="1">
         <thead>
             <tr>
+                <th></th>
+                <th colspan="5">its23lives</th>
+                <th width="50px"></th>
+                <th colspan="5">straindead</th>
+            </tr>
+            <tr>
                 <th>Time</th>
-                <th>its23lives Chocolate</th>
-                <th>its23lives Increase</th>
-                <th>straindead Chocolate</th>
-                <th>straindead Increase</th>
+                <th>Chocolate</th>
+                <th>Increase</th>
+                <th>Chocolate/Min</th>
+                <th>Dupes</th>
+                <th>Dupes Inc</th>
+                <th></th>
+                <th>Chocolate</th>
+                <th>Increase</th>
+                <th>Chocolate/Min</th>
+                <th>Dupes</th>
+                <th>Dupes Inc</th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +56,17 @@
             }
         }
 
+        function calculatePerMinute(currentValue, previousValue, currentTime, previousTime) {
+            if (!previousValue || !previousTime) return 0;
+            const timeDifference = (new Date(currentTime) - new Date(previousTime)) / 60000; // difference in minutes
+            const increase = currentValue - previousValue;
+            return timeDifference ? (increase / timeDifference).toFixed(2) : 0;
+        }
+
+        function formatNumber(number) {
+            return new Intl.NumberFormat().format(number);
+        }
+
         function populateTable(data) {
             const tableBody = document.querySelector('#data-table tbody');
             tableBody.innerHTML = ''; // Clear existing rows
@@ -46,29 +76,75 @@
 
                 // Time
                 const timeCell = document.createElement('td');
-                timeCell.textContent = its23livesEntry.time;
+                timeCell.textContent = new Date(its23livesEntry.time).toUTCString();
                 row.appendChild(timeCell);
 
                 // its23lives Chocolate
                 const its23livesChocolateCell = document.createElement('td');
-                its23livesChocolateCell.textContent = its23livesEntry.chocolate;
+                its23livesChocolateCell.textContent = formatNumber(its23livesEntry.chocolate);
                 row.appendChild(its23livesChocolateCell);
 
                 // its23lives Increase
                 const its23livesIncreaseCell = document.createElement('td');
-                its23livesIncreaseCell.textContent = its23livesEntry.increase;
+                its23livesIncreaseCell.textContent = formatNumber(its23livesEntry.increase);
                 row.appendChild(its23livesIncreaseCell);
+
+                // its23lives Chocolate/Min
+                const its23livesPerMinCell = document.createElement('td');
+                const prevIts23livesEntry = index > 0 ? data.its23lives[index - 1] : null;
+                its23livesPerMinCell.textContent = formatNumber(calculatePerMinute(
+                    its23livesEntry.chocolate,
+                    prevIts23livesEntry?.chocolate,
+                    its23livesEntry.time,
+                    prevIts23livesEntry?.time
+                ));
+                row.appendChild(its23livesPerMinCell);
+
+                // its23lives Dupes
+                const its23livesDupesCell = document.createElement('td');
+                its23livesDupesCell.textContent = formatNumber(its23livesEntry.dupes);
+                row.appendChild(its23livesDupesCell);
+
+                // its23lives Dupes Inc
+                const its23livesDupesIncCell = document.createElement('td');
+                its23livesDupesIncCell.textContent = formatNumber(its23livesEntry.dupes_inc);
+                row.appendChild(its23livesDupesIncCell);
+
+                // Empty Cell
+                const emptyCell = document.createElement('td');
+                row.appendChild(emptyCell);
 
                 // straindead Chocolate
                 const straindeadEntry = data.straindead[index];
                 const straindeadChocolateCell = document.createElement('td');
-                straindeadChocolateCell.textContent = straindeadEntry ? straindeadEntry.chocolate : '';
+                straindeadChocolateCell.textContent = straindeadEntry ? formatNumber(straindeadEntry.chocolate) : '';
                 row.appendChild(straindeadChocolateCell);
 
                 // straindead Increase
                 const straindeadIncreaseCell = document.createElement('td');
-                straindeadIncreaseCell.textContent = straindeadEntry ? straindeadEntry.increase : '';
+                straindeadIncreaseCell.textContent = straindeadEntry ? formatNumber(straindeadEntry.increase) : '';
                 row.appendChild(straindeadIncreaseCell);
+
+                // straindead Chocolate/Min
+                const straindeadPerMinCell = document.createElement('td');
+                const prevStraindeadEntry = index > 0 ? data.straindead[index - 1] : null;
+                straindeadPerMinCell.textContent = straindeadEntry ? formatNumber(calculatePerMinute(
+                    straindeadEntry.chocolate,
+                    prevStraindeadEntry?.chocolate,
+                    straindeadEntry.time,
+                    prevStraindeadEntry?.time
+                )) : '';
+                row.appendChild(straindeadPerMinCell);
+
+                // straindead Dupes
+                const straindeadDupesCell = document.createElement('td');
+                straindeadDupesCell.textContent = straindeadEntry ? formatNumber(straindeadEntry.dupes) : '';
+                row.appendChild(straindeadDupesCell);
+
+                // straindead Dupes Inc
+                const straindeadDupesIncCell = document.createElement('td');
+                straindeadDupesIncCell.textContent = straindeadEntry ? formatNumber(straindeadEntry.dupes_inc) : '';
+                row.appendChild(straindeadDupesIncCell);
 
                 tableBody.appendChild(row);
             });
@@ -82,6 +158,25 @@
             }
             populateTable(data);
         }
+
+        function saveScrollPosition() {
+            localStorage.setItem('scrollPosition', window.scrollY);
+        }
+
+        function restoreScrollPosition() {
+            const scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition) {
+                window.scrollTo(0, parseFloat(scrollPosition));
+            }
+        }
+
+        window.addEventListener('beforeunload', saveScrollPosition);
+        window.addEventListener('load', restoreScrollPosition);
+
+        // Reload the page every 5 minutes
+        setTimeout(() => {
+            location.reload();
+        }, 300000);
 
         init();
     </script>
