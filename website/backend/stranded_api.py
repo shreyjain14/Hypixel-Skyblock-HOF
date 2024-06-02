@@ -167,13 +167,13 @@ def stranded(uuid):
                         stranded_tops['misc']['chocolate'] = profile['events']['easter']['total_chocolate']
 
                 if 'rabbits' in profile['events']['easter']:
-                    print(len(profile['events']['easter']['rabbits']))
                     unique_rabbits = 0
                     for i in profile['events']['easter']['rabbits'].values():
                         if type(i) != dict:
                             unique_rabbits += 1
                     if stranded_tops['misc']['unique_rabbits'] < unique_rabbits:
                         stranded_tops['misc']['unique_rabbits'] = unique_rabbits
+
 
         if 'death_count' in profile['player_data']:
             if profile['player_data']['death_count'] > stranded_tops['misc']['deaths']:

@@ -85,7 +85,7 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
 
                         changes.append(f"Placed 🥇 in {title} in {category}")
 
-                    elif value_one > xp > value_two:
+                    elif value_one >= xp > value_two:
                         # Move the third place to the second place
                         cursor.execute(f"""
                             UPDATE {table_name}
@@ -120,7 +120,7 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
 
                         changes.append(f"Placed 🥇 in {title} in {category}")
 
-                    elif value_one > xp > value_two:
+                    elif value_one >= xp > value_two:
                         # Move existing positions and update the second place
                         cursor.execute(f"""
                             UPDATE {table_name}
@@ -131,7 +131,7 @@ def update_leaderboard(connection, cursor, stranded_data, username, table_name="
 
                         changes.append(f"Placed 🥈 in {title} in {category}")
 
-                    elif value_two > xp > value_three:
+                    elif value_two >= xp > value_three:
                         # Update the third place
                         cursor.execute(f"""
                             UPDATE {table_name}
