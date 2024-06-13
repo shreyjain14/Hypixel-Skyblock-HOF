@@ -53,7 +53,7 @@ def blacklist():
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO analytics (page, visit_time) VALUES ('blacklist', CURRENT_TIMESTAMP);")
 
-            cursor.execute("SELECT * FROM blacklist ORDER BY list_id;")
+            cursor.execute("SELECT * FROM blacklist ORDER BY p_id;")
 
             connection.commit()
 
