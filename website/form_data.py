@@ -40,7 +40,7 @@ def load():
             return make_response(jsonify(updates), 200)
 
         else:
-            return make_response(jsonify(['ERROR: Username not Found!']), 200)
+            return make_response(jsonify(['ERROR: Username not Found!']), 400)
 
 
 @form_data.route('/blacklist-user')
