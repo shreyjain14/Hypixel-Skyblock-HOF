@@ -4,7 +4,7 @@ from .backend.get_api import get_profiles
 from dotenv import load_dotenv
 import psycopg2
 import os
-from .backend import check, cf_tracker
+from .backend import check
 
 
 load_dotenv()
