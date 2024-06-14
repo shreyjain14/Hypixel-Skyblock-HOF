@@ -70,8 +70,3 @@ def update():
             connection.commit()
 
     return render_template("update_data.html")
-
-
-@views.route('/tracker')
-def tracker():
-    return render_template("tracker.html")
